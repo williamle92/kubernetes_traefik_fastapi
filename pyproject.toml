@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "backend"
+name = "api"
 version = "0.1.0"
 description = ""
 authors = ["William Le <williamkle92@gmail.com>"]
@@ -42,16 +42,16 @@ docstring-code-format = true
 docstring-code-line-length = 40
 
 [tool.taskipy.tasks]
-staging = "dotenv --file .staging.env run"
-staging-python = "dotenv --file .staging.env run python"
+staging = "dotenv --file .env run"
+staging-python = "dotenv --file .env run python"
 
 # Migrations
-generate-migrations = "dotenv --file .staging.env run alembic revision --autogenerate"
-commit-migrations = "dotenv --file .staging.env run alembic upgrade head"
-rollback-migrations = "dotenv --file .staging.env run alembic downgrade -1"
+generate-migrations = "dotenv --file .env run alembic revision --autogenerate"
+commit-migrations = "dotenv --file .env run alembic upgrade head"
+rollback-migrations = "dotenv --file .env run alembic downgrade -1"
 
 # API
-app = "dotenv --file .staging.env run uvicorn backend.main:app --reload"
+app = "dotenv --file .env run uvicorn backend.main:app --reload"
 
 # Production
 production = "dotenv --file .production.env run"
