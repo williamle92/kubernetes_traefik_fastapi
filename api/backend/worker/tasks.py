@@ -1,5 +1,5 @@
 from celery import Celery
-from backend.configs import Configs
+from api.backend.configs import Configs
 
 app = Celery("hyperion", broker=f"redis://{Configs.REDIS_HOST}")
 

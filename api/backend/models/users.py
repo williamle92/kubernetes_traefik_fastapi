@@ -4,7 +4,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy_utils import ChoiceType
 
-from backend.models.base import Base
+from api.backend.models.base import Base
 
 
 class UserRole(Enum):

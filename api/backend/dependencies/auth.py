@@ -1,13 +1,13 @@
 from fastapi import Depends, HTTPException, status
-from backend.pydantic.auth import Token
-from backend.models.base import get_connection
+from api.backend.pydantic.auth import Token
+from api.backend.models.base import get_connection
 from sqlalchemy import select
-from backend.models.users import User
+from api.backend.models.users import User
 from sqlalchemy.ext.asyncio import AsyncEngine
 from passlib.hash import md5_crypt
 from jose import JWTError, jwt
 import datetime
-from backend.configs import Configs
+from api.backend.configs import Configs
 from fastapi.security import OAuth2PasswordBearer
 
 oauth: OAuth2PasswordBearer = OAuth2PasswordBearer("/token")
@@ -22,9 +22,9 @@ async def hash_password(password: str) -> str:
 
 
 async def create_token(username, expire: int = 1800):
-    expiration: datetime.datetime = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(
-        seconds=expire
-    )
+    expiration: datetime.datetime = datetime.datetime.now(
+        tz=datetime.UTC
+    ) + datetime.timedelta(seconds=expire)
     time_string = expiration.strftime("%Y-%m-%d %H:%M:%S")
     to_encode = {"sub": username, "exp": expiration}
     encoded_jwt = jwt.encode(to_encode, Configs.SECRET_KEY, algorithm=Configs.ALGORITHM)
@@ -32,7 +32,9 @@ async def create_token(username, expire: int = 1800):
     return Token(access_token=encoded_jwt, expiration=time_string)
 
 
-async def verify_token(token=Depends(oauth), engine: AsyncEngine = Depends(get_connection)):
+async def verify_token(
+    token=Depends(oauth), engine: AsyncEngine = Depends(get_connection)
+):
     try:
         payload = jwt.decode(token, Configs.SECRET_KEY, algorithms=Configs.ALGORITHM)
 

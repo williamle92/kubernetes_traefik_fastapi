@@ -27,6 +27,7 @@ class Settings(BaseSettings):
             values.data.get("PG_PASSWORD"),
             values.data.get("PG_HOST"),
             values.data.get("PG_PORT"),
+            values.data.get("PG_DB"),
         )
         return value
 

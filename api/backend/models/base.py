@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from fastapi import Depends
 
-from backend.configs import Configs
+from api.backend.configs import Configs
 
 # Sync
 # engine: Engine = create_engine(Configs.PG_URI)
@@ -28,5 +28,7 @@ async def get_connection(db_url=Configs.PG_URI) -> AsyncEngine:
 
 # ORM
 async def get_session(engine: AsyncEngine = Depends(create_async_engine)):
-    async_session: AsyncSession = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    async_session: AsyncSession = async_sessionmaker(
+        autocommit=False, autoflush=False, bind=engine
+    )
     return async_session

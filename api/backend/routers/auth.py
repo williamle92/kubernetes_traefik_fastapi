@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from backend.pydantic.auth import Token, OAuthRequestForm
-from backend.models.base import get_connection
+from api.backend.pydantic.auth import Token, OAuthRequestForm
+from api.backend.models.base import get_connection
 from sqlalchemy import select, and_, insert
-from backend.models.users import User
-from backend.pydantic.auth import RegisterIn, RegisterOut
+from api.backend.models.users import User
+from api.backend.pydantic.auth import RegisterIn, RegisterOut
 from sqlalchemy.ext.asyncio import AsyncEngine
-from backend.dependencies.auth import verify_password_hash, create_token, hash_password
+from api.backend.dependencies.auth import (
+    verify_password_hash,
+    create_token,
+    hash_password,
+)
 
 router: APIRouter = APIRouter(tags=["Auth"])
 
@@ -16,10 +20,14 @@ async def verify_token(
     connection=Depends(get_connection),
 ):
     async with connection.connect() as conn:
-        user: User = await conn.execute(select(User).where(and_(User.email == data.username)))
+        user: User = await conn.execute(
+            select(User).where(and_(User.email == data.username))
+        )
         result: User = user.first()
 
-        if not result or not await verify_password_hash(data.password, result.hashed_password):
+        if not result or not await verify_password_hash(
+            data.password, result.hashed_password
+        ):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
@@ -37,7 +45,10 @@ async def register(request: RegisterIn, engine: AsyncEngine = Depends(get_connec
     async with engine.connect() as conn:
         insert_user = await conn.execute(
             insert(User)
-            .values(**request.model_dump(exclude="password"), hashed_password=hashed_password)
+            .values(
+                **request.model_dump(exclude="password"),
+                hashed_password=hashed_password
+            )
             .returning(
                 User.first_name,
                 User.last_name,

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from backend.routers.users import router as user_router
-from backend.routers.auth import router as auth_router
-from backend.worker.tasks import add
+from api.backend.routers.users import router as user_router
+from api.backend.routers.auth import router as auth_router
+from api.backend.worker.tasks import add
 
 app: FastAPI = FastAPI(docs_url="/swagger", redoc_url="/")
 

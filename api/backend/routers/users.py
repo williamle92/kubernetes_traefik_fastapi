@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlalchemy import select
 from typing import List
-from backend.models import User
-from backend.models.base import get_connection
-from backend.pydantic.users import UserOut, UsersOut
-from backend.dependencies.auth import verify_token
+from api.backend.models import User
+from api.backend.models.base import get_connection
+from api.backend.pydantic.users import UserOut, UsersOut
+from api.backend.dependencies.auth import verify_token
 from sqlalchemy.engine.cursor import CursorResult
 from sqlalchemy.engine.row import Row
 
@@ -35,5 +35,7 @@ async def get_user(
         result: Row = query.first()
 
         if not result:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
         return UserOut(**result._asdict())
