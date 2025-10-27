@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["William Le <williamkle92@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11.9"
+fastapi = "^0.110.1"
+pre-commit = "^3.7.0"
+ruff = "^0.3.7"
+uvicorn = "^0.29.0"
+celery = "^5.3.6"
+sqlalchemy = "^2.0.29"
+python-dotenv = "^1.0.1"
+pydantic-settings = "^2.2.1"
+taskipy = "^1.12.2"
+sqlalchemy-utils = "^0.41.2"
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+greenlet = "^3.0.3"
+pydantic = {extras = ["email"], version = "^2.7.0"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = "^1.7.4"
+python-multipart = "^0.0.9"
+bcrypt = "4.0.1"
+redis = "^5.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+docstring-code-line-length = 40
+
+[tool.taskipy.tasks]
+staging = "dotenv --file .staging.env run"
+staging-python = "dotenv --file .staging.env run python"
+
+# Migrations
+generate-migrations = "dotenv --file .staging.env run alembic revision --autogenerate"
+commit-migrations = "dotenv --file .staging.env run alembic upgrade head"
+rollback-migrations = "dotenv --file .staging.env run alembic downgrade -1"
+
+# API
+app = "dotenv --file .staging.env run uvicorn backend.main:app --reload"
+
+# Production
+production = "dotenv --file .production.env run"
+
+
+# Worker
+worker = "celery -A backend.worker.tasks worker --loglevel=INFO"

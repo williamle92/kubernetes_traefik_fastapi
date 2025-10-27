@@ -1,0 +1,7 @@
+*__pycache__*
+git-crypt-key
+.idea/
+.gitattributes
+.ruff_cache
+*.pytest_cache*
+.DS_Store
