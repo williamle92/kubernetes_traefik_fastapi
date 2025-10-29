@@ -1,0 +1,54 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: traefik
+#   labels:
+#     app: ingress
+#   namespace: hyperion
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: ingress
+#   template:
+#     metadata:
+#       labels:
+#         app: ingress
+#     spec:
+#       containers:
+#         - name: traefik
+#           image: traefik:v2.11
+#           args:
+#             - "--api.insecure=true"
+#             - "--providers.kubernetescrd=true"
+#             - "--entrypoints.web.address=:80"
+#           ports:
+#             - name: web
+#               containerPort: 80
+#             - name: dashboard
+#               containerPort: 8080
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+  namespace: hyperion
+  labels:
+    app: whoami
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+    spec:
+      containers:
+        - name: whoami
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
