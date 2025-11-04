@@ -9,6 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PYTHONPATH=/app
 WORKDIR /app
 
 # Copy the source code into the container.
