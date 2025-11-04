@@ -51,11 +51,11 @@ commit-migrations = "dotenv --file .env run alembic upgrade head"
 rollback-migrations = "dotenv --file .env run alembic downgrade -1"
 
 # API
-app = "dotenv --file .env run uvicorn backend.main:app --reload"
+app = "dotenv --file .env run uvicorn api.backend.main:app --reload"
 
 # Production
 production = "dotenv --file .production.env run"
 
 
 # Worker
-worker = "celery -A backend.worker.tasks worker --loglevel=INFO"
+worker = "celery -A api.backend.worker.tasks worker --loglevel=INFO"
