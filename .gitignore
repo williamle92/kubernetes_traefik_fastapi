@@ -5,3 +5,4 @@ git-crypt-key
 .ruff_cache
 *.pytest_cache*
 .DS_Store
+git-crypt-key
