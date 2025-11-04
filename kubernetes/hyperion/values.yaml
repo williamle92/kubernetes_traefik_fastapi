@@ -4,14 +4,52 @@ image:
   pullPolicy: IfNotPresent
 
 replicaCount: 3
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  fsGroup: 10001
 
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
 service:
   type: ClusterIP
   port: 8000
-
+  targetPort: 8000
 ingress:
   enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
   hosts:
-    - host: backend.local
+    - host: hyperion.local
       paths:
-        - /
+        - path: /api
+          pathType: Prefix
+  tls: []
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+# ConfigMap for non-sensitive config
+envFrom:
+  - configMapRef:
+      name: api-config
+  - secretRef:
+      name: api-secrets
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
