@@ -1,0 +1,18 @@
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`127.0.0.1`)
+    entryPoints:
+      - web
+providers:
+  kubernetesGateway:
+    enabled: true
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+
+
+deployment:
+  replicas: 3
