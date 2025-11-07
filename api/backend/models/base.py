@@ -21,14 +21,14 @@ Base = declarative_base()
 
 
 # Core
-async def get_connection(db_url=Configs.PG_URI) -> AsyncEngine:
+async def get_connection() -> AsyncEngine:
+    db_url: str = Configs.PG_URI
     engine: AsyncEngine = create_async_engine(db_url)
     return engine
 
 
 # ORM
-async def get_session(engine: AsyncEngine = Depends(create_async_engine)):
-    async_session: AsyncSession = async_sessionmaker(
-        autocommit=False, autoflush=False, bind=engine
-    )
+async def get_session():
+    engine: AsyncEngine = Depends(create_async_engine)
+    async_session: AsyncSession = async_sessionmaker(autocommit=False, autoflush=False, bind=engine)
     return async_session
