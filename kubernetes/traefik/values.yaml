@@ -1,18 +1,48 @@
-ingressRoute:
-  dashboard:
-    enabled: true
-    matchRule: Host(`127.0.0.1`)
-    entryPoints:
-      - web
+ports:
+  # Defines the HTTP entry point named 'web'
+  web:
+    port: 80
+    nodePort: 30000
+    # # Instructs this entry point to redirect all traffic to the 'websecure' entry point
+    # redirections:
+    #   entryPoint:
+    #     to: websecure
+    #     scheme: https
+    #     permanent: true
+
+  # Defines the HTTPS entry point named 'websecure'
+  websecure:
+    port: 443
+    nodePort: 30001
+
+# Enables the dashboard in Insecure Mode for development
+api:
+  dashboard: true
+  insecure: true
+
+# We will route with IngressRoute instead.
+ingressClass:
+  enabled: false
+
+# Enable CRD Provider for IngressRoute & Disable other providers
+# Providers tell Traefik where to find routing configuration.
 providers:
+  kubernetesIngress:
+     enabled: false
   kubernetesGateway:
+     enabled: false
+  kubernetesCRD:
+     enabled: true  # Enable CRD provider for IngressRoute
+
+# Enable Observability
+logs:
+  general:
+    level: INFO
+  # This enables access logs, outputting them to Traefik's standard output by default. The [Access Logs Documentation](https://doc.traefik.io/traefik/observability/access-logs/) covers formatting, filtering, and output options.
+  access:
     enabled: true
-gateway:
-  listeners:
-    web:
-      namespacePolicy:
-        from: All
 
-
-deployment:
-  replicas: 3
+# Enables Prometheus for Metrics
+metrics:
+  prometheus:
+    enabled: true
