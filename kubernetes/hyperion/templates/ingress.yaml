@@ -7,21 +7,24 @@ metadata:
 spec:
   entryPoints:
     - web
+    - websecure
+  tls:
+    secretName: hyperion-tls
   routes:
     # Traefik Dashboard UI
-    - match: PathPrefix(`/dashboard`)
+    - match: Host(`hyperion.local`) && PathPrefix(`/dashboard`)
       kind: Rule
       services:
         - name: api@internal
           kind: TraefikService
     # Traefik Dashboard API (needed for dashboard to fetch data)
-    - match: PathPrefix(`/api`)
+    - match: Host(`hyperion.local`) && PathPrefix(`/api`)
       kind: Rule
       services:
         - name: api@internal
           kind: TraefikService
     # Your Hyperion API
-    - match: PathPrefix(`/v1/api`)
+    - match: Host(`hyperion.local`) && PathPrefix(`/v1/api`)
       kind: Rule
       services:
         - name: hyperion
