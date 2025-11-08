@@ -102,31 +102,31 @@ This project serves as a template or learning resource for building modern web a
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        KUBERNETES CLUSTER                    │
-│                                                              │
-│  ┌────────────────────┐         ┌──────────────────────┐   │
-│  │   Ingress/Traefik  │         │   ConfigMap/Secrets  │   │
-│  │  (Load Balancer)   │         │   (Configuration)    │   │
-│  └──────────┬─────────┘         └──────────────────────┘   │
-│             │                                                │
+│                        KUBERNETES CLUSTER                   │
+│                                                             │
+│  ┌────────────────────┐         ┌──────────────────────┐    │
+│  │   Ingress/Traefik  │         │   ConfigMap/Secrets  │    │
+│  │  (Load Balancer)   │         │   (Configuration)    │    │
+│  └──────────┬─────────┘         └──────────────────────┘    │
+│             │                                               │
 │  ┌──────────▼─────────┐                                     │
-│  │   API Pods (x3)    │◄────┐                              │
-│  │   (FastAPI App)    │     │                              │
-│  └──────────┬─────────┘     │                              │
+│  │   API Pods (x3)    │◄────┐                               │
+│  │   (FastAPI App)    │     │                               │
+│  └──────────┬─────────┘     │                               │
 │             │               │                               │
 │             │          Environment                          │
 │             │          Variables                            │
-│             │                                                │
-│  ┌──────────▼─────────┐     │                              │
-│  │   PostgreSQL DB    │     │                              │
-│  │   (Data Storage)   │     │                              │
-│  └────────────────────┘     │                              │
-│                              │                               │
-│  ┌─────────────────────┐    │                              │
-│  │  Worker Pods (x2)   │◄───┘                              │
+│             │                                               │
+│  ┌──────────▼─────────┐     │                               │
+│  │   PostgreSQL DB    │     │                               │
+│  │   (Data Storage)   │     │                               │
+│  └────────────────────┘     │                               │
+│                             │                               │
+│  ┌─────────────────────┐    │                               │
+│  │  Worker Pods (x2)   │◄───┘                               │
 │  │  (Celery Workers)   │                                    │
 │  └──────────┬──────────┘                                    │
-│             │                                                │
+│             │                                               │
 │  ┌──────────▼──────────┐                                    │
 │  │       Redis         │                                    │
 │  │  (Message Broker)   │                                    │
