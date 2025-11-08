@@ -6,3 +6,4 @@ git-crypt-key
 *.pytest_cache*
 .DS_Store
 git-crypt-key
+hyperion.local*
