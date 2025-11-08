@@ -1,43 +1,28 @@
-{{- if .Values.ingress.enabled -}}
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+# kubernetes/hyperion/templates/ingress-standalone.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: {{ include "hyperion.fullname" . }}
-  labels:
-    {{- include "hyperion.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+  name: hyperion-ingress
+  namespace: hyperion
 spec:
-  {{- with .Values.ingress.className }}
-  ingressClassName: {{ . }}
-  {{- end }}
-  {{- if .Values.ingress.tls }}
-  tls:
-    {{- range .Values.ingress.tls }}
-    - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
-    {{- end }}
-  {{- end }}
-  rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
-        paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
-            backend:
-              service:
-                name: {{ include "hyperion.fullname" $ }}
-                port:
-                  number: {{ $.Values.service.port }}
-          {{- end }}
-    {{- end }}
-{{- end }}
+  entryPoints:
+    - web
+  routes:
+    # Traefik Dashboard UI
+    - match: PathPrefix(`/dashboard`)
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+    # Traefik Dashboard API (needed for dashboard to fetch data)
+    - match: PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
+    # Your Hyperion API
+    - match: PathPrefix(`/v1/api`)
+      kind: Rule
+      services:
+        - name: hyperion
+          port: 8000
