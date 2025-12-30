@@ -6,8 +6,8 @@ auth:
 master:
   count: 1
   persistence:
-    enabled: true
+    enabled: false
     size: 8Gi
 
 replica:
-  replicaCount: 1
+  replicaCount: 0
