@@ -58,3 +58,6 @@ worker:
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
+
+ingress:
+  enabled: false
