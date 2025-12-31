@@ -1,0 +1,11 @@
+namespace: staging
+
+postgres:
+  image: postgres:15.6-bookworm
+  user: postgres
+  port: 5432
+  storage: 5Gi
+
+service:
+  internalName: postgres-internal
+  externalName: postgres-external
