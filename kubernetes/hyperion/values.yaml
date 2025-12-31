@@ -1,5 +1,5 @@
 image:
-  repository: williamle92/hyperion
+  repository: us-west2-docker.pkg.dev/fastapi-celery-traefik/hyperion/backend
   tag: latest
   pullPolicy: Always
 
