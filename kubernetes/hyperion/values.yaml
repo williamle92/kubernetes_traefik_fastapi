@@ -59,5 +59,7 @@ worker:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
 
+nodeSelector:
+  cloud.google.com/gke-spot: "true"
 ingress:
   enabled: false
